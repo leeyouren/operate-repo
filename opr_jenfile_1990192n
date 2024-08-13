@@ -1,1 +1,109 @@
-test
+pipeline {
+
+    agent any
+
+    stages {
+
+        stage('Opr-S1-1990192n') {
+
+            steps {
+
+                script {
+
+                    echo "Opr-S1-1990192n: uat web server is backup and updated"
+
+                }
+
+            }
+
+        }
+
+        stage('Opr-S2-1990192n') {
+
+            steps {
+
+                script {
+
+                    echo "Opr-S2-1990192n: uat svr is running after update"
+
+                }
+
+            }
+
+        }
+
+        stage('Opr-S3-1990192n') {
+
+            steps {
+
+                script {
+
+                    echo "Opr-S3-1990192n: Proceed to generate load test report for uat web server"
+
+                }
+
+            }
+
+        }
+
+        stage('Opr-S4-1990192n') {
+
+            steps {
+
+                script {
+
+                    echo "Opr-S4-1990192n: load test for uat web server is successful"
+
+                }
+
+            }
+
+        }
+
+        stage('Opr-S5-1990192n') {
+
+            steps {
+
+                script {
+
+                    echo "Opr-S5-1990192n: prod web server is backup and updated"
+
+                }
+
+            }
+
+        }
+
+        stage('Opr-S6-1990192n') {
+
+            steps {
+
+                script {
+
+                    echo "Opr-S6-1990192n: prod web svr is running after update"
+
+                }
+
+            }
+
+        }
+
+        stage('Opr-S7-1990192n') {
+
+            steps {
+
+                script {
+
+                    echo "Opr-S7-1990192n: prod web server is updated and ready"
+
+                }
+
+            }
+
+        }
+
+    }
+
+}
+
+
