@@ -1,109 +1,90 @@
 pipeline {
-
     agent any
-
     stages {
-
         stage('Opr-S1-1990192n') {
-
             steps {
-
                 script {
-
-                    echo "Opr-S1-1990192n: uat web server is backup and updated"
-
+                    echo "Opr-S1-1990192n: Starting UAT server backup and update"
+                    sh "docker commit uat_1990192n bkup_uat_image"
+                    sh "bolt script run '/tmp/1990192n/script_1990192n' --targets uat_1990192n.localdomain"
+                    echo "Opr-S1-1990192n: UAT web server is backup and updated"
                 }
-
             }
-
         }
-
         stage('Opr-S2-1990192n') {
-
             steps {
-
                 script {
-
-                    echo "Opr-S2-1990192n: uat svr is running after update"
-
+                    sh "curl -Is http://localhost:32600 | head -n 1 > /tmp/uat-result-file"
+                    def result = readFile('/tmp/uat-result-file').trim()
+                    if (result == "HTTP/1.1 200 OK") {
+                        echo "Opr-S2-1990192n: UAT server is running after update"
+                    } else {
+                        echo "Opr-S2-1990192n: UAT server fails after update and is rolled back"
+                        sh "docker stop uat_1990192n && docker rm uat_1990192n"
+                        sh "docker run -d --name uat_1990192n --hostname uat_1990192n.localdomain --net custom_network --ip 192.168.30.110 -p 32600:80 bkup_uat_image"
+                    }
                 }
-
             }
-
         }
-
         stage('Opr-S3-1990192n') {
-
             steps {
-
                 script {
+                    def proceed = input message: 'Proceed to generate load test report (uat server is running) or abort (uat server is rolled back)?', 
+                                         parameters: [choice(name: 'Action', choices: ['Proceed', 'Abort'], description: 'Choose your action')]
 
-                    echo "Opr-S3-1990192n: Proceed to generate load test report for uat web server"
-
+                    if (proceed == 'Proceed') {
+                        echo "Opr-S3-1990192n: Proceed to generate load test report for UAT web server"
+                    } else {
+                        echo "Opr-S3-1990192n: Aborting pipeline as UAT server is rolled back"
+                        currentBuild.result = 'ABORTED'
+                        error "Pipeline aborted by user decision."
+                    }
                 }
-
             }
-
         }
-
         stage('Opr-S4-1990192n') {
-
             steps {
-
-                script {
-
-                    echo "Opr-S4-1990192n: load test for uat web server is successful"
-
-                }
-
+                echo "Opr-S4-1990192n: Load test for UAT web server is successful"
             }
-
         }
-
         stage('Opr-S5-1990192n') {
-
             steps {
-
                 script {
-
-                    echo "Opr-S5-1990192n: prod web server is backup and updated"
-
+                    echo "Opr-S5-1990192n: Starting PROD server backup and update"
+                    sh "docker commit prod_1990192n bkup_prod_image"
+                    sh "bolt script run '/tmp/1990192n/script_1990192n' --targets prod_1990192n.localdomain"
+                    echo "Opr-S5-1990192n: PROD web server is backup and updated"
                 }
-
             }
-
         }
-
         stage('Opr-S6-1990192n') {
-
             steps {
-
                 script {
-
-                    echo "Opr-S6-1990192n: prod web svr is running after update"
-
+                    sh "curl -Is http://localhost:32700 | head -n 1 > /tmp/prod-result-file"
+                    def result = readFile('/tmp/prod-result-file').trim()
+                    if (result == "HTTP/1.1 200 OK") {
+                        echo "Opr-S6-1990192n: PROD server is running after update"
+                    } else {
+                        echo "Opr-S6-1990192n: PROD server fails after update and is rolled back"
+                        sh "docker stop prod_1990192n && docker rm prod_1990192n"
+                        sh "docker run -d --name prod_1990192n --hostname prod_1990192n.localdomain --net custom_network --ip 192.168.30.220 -p 32700:80 bkup_prod_image"
+                    }
                 }
-
             }
-
         }
-
         stage('Opr-S7-1990192n') {
-
             steps {
-
                 script {
+                    def action = input message: 'Proceed to further system health check or release PROD web server to production?', 
+                                       parameters: [choice(name: 'Action', choices: ['Proceed to further system health check', 'Release prod web server to production'], description: 'Choose your action')]
 
-                    echo "Opr-S7-1990192n: prod web server is updated and ready"
-
+                    if (action == 'Proceed to further system health check') {
+                        echo "Opr-S7-1990192n: Proceed to further system health check (Note: Further health check is not included in this assignment)"
+                    } else {
+                        echo "Opr-S7-1990192n: PROD web server is updated and ready"
+                    }
                 }
-
             }
-
         }
-
     }
-
 }
-
-
