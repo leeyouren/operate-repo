@@ -7,7 +7,7 @@ pipeline {
                     echo "Opr-S1-1990192n: Starting UAT server backup and update"
                     sh 'docker rmi bkup_uat_image || true'
                     sh "docker commit uat_1990192n bkup_uat_image"
-                    sh "sudo bolt script run '/root/script_1990192n' --targets uat_1990192n.localdomain"
+                    sh "bolt script run '/root/script_1990192n' --targets uat_1990192n.localdomain"
                     echo "Opr-S1-1990192n: UAT web server is backup and updated"
                 }
             }
@@ -53,7 +53,7 @@ pipeline {
                 script {
                     echo "Opr-S5-1990192n: Starting PROD server backup and update"
                     sh "docker commit prod_1990192n bkup_prod_image"
-                    sh "sudo bolt script run '/root/script_1990192n' --targets prod_1990192n.localdomain"
+                    sh "bolt script run '/root/script_1990192n' --targets prod_1990192n.localdomain"
                     echo "Opr-S5-1990192n: PROD web server is backup and updated"
                 }
             }
