@@ -2,11 +2,9 @@
 
 /opt/puppetlabs/bin/puppet resource package apache2 ensure=installed
 
-
-
 /opt/puppetlabs/bin/puppet resource service apache2 ensure=running
 
-
+/opt/puppetlabs/bin/puppet resource package git ensure=installed
 
 rm -rf /tmp/1990192n/work
 
