@@ -16,6 +16,12 @@ mkdir -p /tmp/1990192n/work
 
 git clone https://github.com/leeyouren/operate-repo.git /tmp/1990192n/work
 
+if [ -f /tmp/1990192n/work/index.html_1990192n ]; then
+    cp /tmp/1990192n/work/index.html_1990192n /var/www/html/index.html
+else
+    echo "Error: /tmp/1990192n/work/index.html_1990192n not found."
+    exit 1
+fi
 
 
 cp /tmp/1990192n/work/index.html_1990192n /var/www/html/index.html
