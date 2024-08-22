@@ -14,7 +14,7 @@ mkdir -p /tmp/1990192n/work
 
 
 
-git clone https://github.com/leeyouren/operate-repo-1990192n.git /tmp/1990192n/work
+git clone https://github.com/leeyouren/operate-repo.git /tmp/1990192n/work
 
 
 
