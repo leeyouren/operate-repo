@@ -8,7 +8,7 @@ pipeline {
                     sh 'docker rmi bkup_uat_image || true'
                     sh "docker commit uat_1990192n bkup_uat_image"
                     //sh "sh 'bolt script run /root/script_1990192n --no-host-key-check --targets uat_1990192n.localdomain"
-                    sh "bolt script run '/root/script_1990192n' -t uat_1990192n.localdomain  -u clientadm -p user123  --no-host-key-check --run-as root" 
+                    bolt script run '/root/script_1990192n' -t uat_1990192n.localdomain  -u clientadm -p user123  --no-host-key-check --run-as root
                     echo "Opr-S1-1990192n: UAT web server is backup and updated"
                 }
             }
