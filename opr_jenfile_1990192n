@@ -7,7 +7,7 @@ pipeline {
                     echo "Opr-S1-1990192n: Starting UAT server backup and update"
                     sh 'docker rmi bkup_uat_image || true'
                     sh "docker commit uat_1990192n bkup_uat_image"
-                    sh "sudo /opt/puppetlabs/bin/bolt script run '/root/script_1990192n' -t uat_1990192n.localdomain  -u clientadm -p user123  --no-host-key-check --run-as root"
+                    sh "sudo -S /opt/puppetlabs/bin/bolt script run '/root/script_1990192n' -t uat_1990192n.localdomain  -u clientadm -p user123  --no-host-key-check --run-as root"
                     echo "Opr-S1-1990192n: UAT web server is backup and updated"
                 }
             }
