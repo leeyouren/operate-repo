@@ -80,7 +80,7 @@ pipeline {
                                        parameters: [choice(name: 'Action', choices: ['Proceed to further system health check', 'Release prod web server to production'], description: 'Choose your action')]
 
                     if (action == 'Proceed to further system health check') {
-                        echo "Opr-S7-1990192n: Proceed to further system health check (Note: Further health check is not included in this assignment)"
+                        echo "Opr-S7-1990192n: Proceed to further system health check"
                     } else {
                         echo "Opr-S7-1990192n: PROD web server is updated and ready"
                     }
